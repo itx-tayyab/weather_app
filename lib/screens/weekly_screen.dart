@@ -45,6 +45,7 @@ class _WeeklyForecastState extends State<WeeklyForecast> {
               decoration: BoxDecoration(color: Colors.transparent),
             ),
           ),
+
         ],
       ),
     );
