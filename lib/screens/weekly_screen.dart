@@ -1,14 +1,16 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:weather_app/Components/weeklyforecast.dart';
 
-class WeeklyForecast extends StatefulWidget {
-  const WeeklyForecast({super.key});
+class WeeklyScreen extends StatefulWidget {
+  const WeeklyScreen({super.key});
 
   @override
-  State<WeeklyForecast> createState() => _WeeklyForecastState();
+  State<WeeklyScreen> createState() => _WeeklyScreenState();
 }
 
-class _WeeklyForecastState extends State<WeeklyForecast> {
+class _WeeklyScreenState extends State<WeeklyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +47,65 @@ class _WeeklyForecastState extends State<WeeklyForecast> {
               decoration: BoxDecoration(color: Colors.transparent),
             ),
           ),
-
+          SafeArea(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.location_on_outlined,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      'Lahore',
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Center(
+                  child: Text(
+                    'Pakistan',
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    WeeklyForecast(title: 'Sunrise', subtitle: 'ssss'),
+                    WeeklyForecast(title: 'Sunset', subtitle: 'ssss'),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      WeeklyForecast(title: 'Humidity', subtitle: 'ssss'),
+                      WeeklyForecast(title: 'UV Index', subtitle: 'ssss'),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    WeeklyForecast(title: 'Heat Index', subtitle: 'ssss'),
+                    WeeklyForecast(title: 'Feelslike', subtitle: 'ssss'),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

@@ -196,9 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           begin: Alignment.centerRight,
                           end: Alignment.centerLeft,
                           colors: [
-                            Color(
-                              0xff222a51,
-                            ), // dark blue (top in your image)
+                            Color(0xff222a51,), // dark blue (top in your image)
                             Color(0xff483b93), // purple
                             Color(0xff6d4dad),
                             Color(0xff8f44ac), // pinkish purple
@@ -227,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            WeeklyForecast(),
+                                            WeeklyScreen(),
                                       ),
                                     );
                                   },
