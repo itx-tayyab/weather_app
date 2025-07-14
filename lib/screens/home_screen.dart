@@ -225,7 +225,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            WeeklyScreen(),
+                                            WeeklyScreen(
+                                              city: snapshot.data!.location!.name.toString(),
+                                              country: snapshot.data!.location!.country.toString(),
+                                              sunrise: snapshot.data!.forecast!.forecastday![0].astro!.sunrise.toString(),
+                                              sunset: snapshot.data!.forecast!.forecastday![0].astro!.sunset.toString(),
+                                              humidity: snapshot.data!.current!.humidity.toString(),
+                                              uv: snapshot.data!.current!.uv!.toInt(),
+                                              heat: snapshot.data!.current!.heatindexC!.toInt(),
+                                              feelslike: snapshot.data!.current!.feelslikeC!.toInt(),
+                                              nextdays: snapshot.data!.forecast!.forecastday!.length.toString(),
+                                            ),
                                       ),
                                     );
                                   },

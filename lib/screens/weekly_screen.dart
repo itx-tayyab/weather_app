@@ -4,7 +4,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/Components/weeklyforecast.dart';
 
 class WeeklyScreen extends StatefulWidget {
-  const WeeklyScreen({super.key});
+  String city, country, sunrise, sunset, humidity,nextdays;
+  int heat, feelslike, uv;
+  WeeklyScreen({
+    super.key,
+    required this.city,
+    required this.country,
+    required this.sunrise,
+    required this.sunset,
+    required this.humidity,
+    required this.uv,
+    required this.heat,
+    required this.feelslike,
+    required this.nextdays,
+  });
 
   @override
   State<WeeklyScreen> createState() => _WeeklyScreenState();
@@ -48,62 +61,127 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
             ),
           ),
           SafeArea(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      color: Colors.white,
-                      size: 28,
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      'Lahore',
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Center(
+                    child: Text(
+                      '${widget.city},',
                       style: GoogleFonts.poppins(
                         color: Colors.white,
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
-                ),
-                Center(
-                  child: Text(
-                    'Pakistan',
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+                  ),
+                  Center(
+                    child: Text(
+                      widget.country,
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    WeeklyForecast(title: 'Sunrise', subtitle: 'ssss'),
-                    WeeklyForecast(title: 'Sunset', subtitle: 'ssss'),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Row(
+                  SizedBox(height: 15),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      WeeklyForecast(title: 'Humidity', subtitle: 'ssss'),
-                      WeeklyForecast(title: 'UV Index', subtitle: 'ssss'),
+                      WeeklyForecast(
+                        title: 'Sunrise',
+                        subtitle: widget.sunrise,
+                      ),
+                      WeeklyForecast(title: 'Sunset', subtitle: widget.sunset),
                     ],
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    WeeklyForecast(title: 'Heat Index', subtitle: 'ssss'),
-                    WeeklyForecast(title: 'Feelslike', subtitle: 'ssss'),
-                  ],
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        WeeklyForecast(
+                          title: 'Humidity',
+                          subtitle: widget.humidity,
+                        ),
+                        WeeklyForecast(
+                          title: 'UV Index',
+                          subtitle: widget.uv.toString(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      WeeklyForecast(
+                        title: 'Heat Index',
+                        subtitle: '${widget.heat.toString()}°',
+                      ),
+                      WeeklyForecast(
+                        title: 'Feelslike',
+                        subtitle: '${widget.feelslike.toString()}°',
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          'Next 7 days forecast',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: 7,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            leading: CircleAvatar(
+                              child: Image.asset('partiallycloud.png'),
+                            ),
+                            title: Text(widget.nextdays), //working on this
+                            subtitle: Text('sssssssssss'),
+                          );
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          'Previous 7 days forecast',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: 7,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            leading: CircleAvatar(
+                              child: Image.asset('partiallycloud.png'),
+                            ),
+                            title: Text('hello'),
+                            subtitle: Text('sssssssssss'),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
