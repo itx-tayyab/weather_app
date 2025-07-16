@@ -18,22 +18,41 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  Future<Weatherdetails>? futureWeather;
+  TextEditingController searchcontroller = TextEditingController();
+  String city =  "Lahore";
+
+  @override
+  void initState() {
+    super.initState();
+    futureWeather = getweatherdetailsapi();
+  }
+
   Future<Weatherdetails> getweatherdetailsapi() async {
+
+    final String apiKey = "6f37c1f48f70449dbd0191843251007";
+    String url =  "http://api.weatherapi.com/v1/forecast.json?key=$apiKey&q=$city&days=7&aqi=no&alerts=no";
+
     final response = await http.get(
-      Uri.parse(
-        'http://api.weatherapi.com/v1/forecast.json?key=6f37c1f48f70449dbd0191843251007&q=Lahore&days=7&aqi=no&alerts=no',
-      ),
+      Uri.parse(url),
       headers: {'Accept': 'application/json', 'User-Agent': 'FlutterApp/1.0'},
     );
-
     var data = jsonDecode(response.body.toString());
 
     if (response.statusCode == 200) {
       return Weatherdetails.fromJson(data);
     } else {
-      return Weatherdetails.fromJson(data);
+      throw Exception("Failed to load weather data");
     }
   }
+
+  void onSearch() {
+    setState(() {
+      city = searchcontroller.text.trim().isEmpty ? "Lahore" : searchcontroller.text.trim();
+      futureWeather = getweatherdetailsapi();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,14 +92,37 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SafeArea(
             child: FutureBuilder(
-              future: getweatherdetailsapi(),
+              future: futureWeather,
               builder: (context, snapshot) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 5),
-                    Row(
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: TextFormField(
+
+                        controller: searchcontroller,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.10),
+                          hintText: 'Search city here',
+                          hintStyle: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 18,
+                          ),
+                          prefixIcon: const Icon(Icons.search, color: Colors.blueAccent),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 25),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                        style: const TextStyle(color: Colors.black, fontSize: 16),
+                        onFieldSubmitted: (_) => onSearch(),
+                      ),
+                    ),
+                    /*Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
@@ -118,15 +160,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ],
-                    ),
-                    SizedBox(height: 25),
+                    ),*/
+                    SizedBox(height: 5,),
                     Center(
                       child: SizedBox(
-                        height: 160,
-                        width: 200,
+                        height: 200,
+                        width: 210,
                         child: Image.network(
                           "https:${snapshot.data!.forecast!.forecastday![0].day!.condition!.icon}",
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                         ),
                       ),
                     ),
@@ -175,11 +217,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 5,),
                     Center(
                       child: SizedBox(
                         height: 150,
-                        width: 300,
+                        width: 320,
                         child: Image.asset(
                           'assets/images/House.png',
                           fit: BoxFit.fill,
@@ -187,7 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Container(
-                      height: 250,
+                      height: 230,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(40),
@@ -205,7 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(13.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: Row(
                               mainAxisAlignment:
                               MainAxisAlignment.spaceAround,
@@ -252,9 +294,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Divider(height: 10),
                           SizedBox(
-                            height: 165,
+                            height: 145,
                             child: Padding(
-                              padding: const EdgeInsets.all(18.0),
+                              padding: const EdgeInsets.only(top: 17,left: 27),
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: 7,

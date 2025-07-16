@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/Components/weeklyforecast.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_app/Modals/previousforecast.dart';
+import 'package:http/http.dart' as http;
 
 class WeeklyScreen extends StatefulWidget {
   String city, country, sunrise, sunset, humidity;
@@ -27,6 +30,32 @@ class WeeklyScreen extends StatefulWidget {
 }
 
 class _WeeklyScreenState extends State<WeeklyScreen> {
+  String dt = DateFormat(
+    'yyyy-MM-dd',
+  ).format(DateTime.now().subtract(Duration(days: 7)));
+  String endDt = DateFormat(
+    'yyyy-MM-dd',
+  ).format(DateTime.now().subtract(Duration(days: 1)));
+
+  Future<Previousforecast> getapiprevious() async {
+    String apiKey = "6f37c1f48f70449dbd0191843251007";
+    String city = widget.city;
+    String url =
+        "https://api.weatherapi.com/v1/history.json?key=$apiKey&q=$city&dt=$dt&end_dt=$endDt";
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {'Accept': 'application/json', 'User-Agent': 'FlutterApp/1.0'},
+    );
+    var data = jsonDecode(response.body.toString());
+
+    if (response.statusCode == 200) {
+      return Previousforecast.fromJson(data);
+    } else {
+      return Previousforecast.fromJson(data);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -158,9 +187,9 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                               backgroundColor: Colors.transparent,
                             ),
                             title: Text(
-                              DateFormat(
-                                'EEEE, dd MMMM yyyy',
-                              ).format(DateTime.parse(widget.nextdays[index].date)),
+                              DateFormat('EEEE, dd MMMM yyyy').format(
+                                DateTime.parse(widget.nextdays[index].date),
+                              ),
                               style: GoogleFonts.poppins(color: Colors.white),
                             ),
                             subtitle: Text(
@@ -183,17 +212,32 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                           ),
                         ),
                       ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: 7,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: CircleAvatar(
-                              child: Image.asset('partiallycloud.png'),
-                            ),
-                            title: Text('hello'),
-                            subtitle: Text('sssssssssss'),
+                      FutureBuilder(
+                        future: getapiprevious(),
+                        builder: (context, snapshot) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount:
+                                snapshot.data!.forecast!.forecastday!.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                leading: CircleAvatar(
+                                  child: Image.network(
+                                    'https:${snapshot.data!.forecast!.forecastday![index].day!.condition!.icon.toString()}',
+                                  ),
+                                ),
+                                title: Text(
+                                  DateFormat('EEEE, dd MMMM yyyy').format(
+                                    DateTime.parse(snapshot.data!.forecast!.forecastday![index].date.toString()),
+                                  ),
+                                  style: GoogleFonts.poppins(color: Colors.white),
+                                ),
+                                subtitle: Text("Max: ${snapshot.data!.forecast!.forecastday![index].day!.maxtempC?.toInt()}°, "
+                                    "Min: ${snapshot.data!.forecast!.forecastday![index].day!.mintempC?.toInt()}°",
+                                  style: GoogleFonts.poppins(color: Colors.white70),),
+                              );
+                            },
                           );
                         },
                       ),
