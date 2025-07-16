@@ -17,7 +17,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late String formatdate;
 
   Future<Weatherdetails> getweatherdetailsapi() async {
     final response = await http.get(
@@ -234,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               uv: snapshot.data!.current!.uv!.toInt(),
                                               heat: snapshot.data!.current!.heatindexC!.toInt(),
                                               feelslike: snapshot.data!.current!.feelslikeC!.toInt(),
-                                              nextdays: snapshot.data!.forecast!.forecastday!.length.toString(),
+                                              nextdays: snapshot.data!.forecast!.forecastday!,
                                             ),
                                       ),
                                     );

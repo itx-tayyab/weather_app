@@ -2,10 +2,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/Components/weeklyforecast.dart';
+import 'package:intl/intl.dart';
 
 class WeeklyScreen extends StatefulWidget {
-  String city, country, sunrise, sunset, humidity,nextdays;
+  String city, country, sunrise, sunset, humidity;
   int heat, feelslike, uv;
+  List nextdays;
+
   WeeklyScreen({
     super.key,
     required this.city,
@@ -142,17 +145,33 @@ class _WeeklyScreenState extends State<WeeklyScreen> {
                       ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: 7,
+                        itemCount: widget.nextdays.length,
                         itemBuilder: (context, index) {
+                          var day = widget.nextdays[index];
+                          var condition = day.day!.condition!.text;
+
                           return ListTile(
                             leading: CircleAvatar(
-                              child: Image.asset('partiallycloud.png'),
+                              backgroundImage: NetworkImage(
+                                'https:${widget.nextdays[index].day!.condition!.icon}',
+                              ),
+                              backgroundColor: Colors.transparent,
                             ),
-                            title: Text(widget.nextdays), //working on this
-                            subtitle: Text('sssssssssss'),
+                            title: Text(
+                              DateFormat(
+                                'EEEE, dd MMMM yyyy',
+                              ).format(DateTime.parse(widget.nextdays[index].date)),
+                              style: GoogleFonts.poppins(color: Colors.white),
+                            ),
+                            subtitle: Text(
+                              "Max: ${widget.nextdays[index].day!.maxtempC?.toInt()}°, "
+                              "Min: ${widget.nextdays[index].day!.mintempC?.toInt()}°",
+                              style: GoogleFonts.poppins(color: Colors.white70),
+                            ),
                           );
                         },
                       ),
+
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Text(
