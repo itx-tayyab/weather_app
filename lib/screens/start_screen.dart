@@ -39,45 +39,49 @@ class _StartScreenState extends State<StartScreen> {
               children: [
                 Center(
                   child: SizedBox(
-                    height: 350,
-                    width: 250,
+                    height: MediaQuery.of(context).size.height * 0.35,
+                    width: MediaQuery.of(context).size.width * 0.6,
                     child: Image.asset('assets/images/partiallycloud.png'),
                   ),
                 ),
-                SizedBox(height: 80,),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Column(
                       children: [
-                        Text('WEATHER', style: GoogleFonts.poppins(
-                          fontSize: 58,
-                          color: Colors.white,
-                        )),
-                        Text('ForeCasts',style: GoogleFonts.poppins(
-                          fontSize: 64,
-                          color: Color(0xffDDB130),
-                        )),
+                        FittedBox(
+                          child: Text('WEATHER', style: GoogleFonts.poppins(
+                            fontSize: MediaQuery.of(context).size.width * 0.12,
+                            color: Colors.white,
+                          )),
+                        ),
+                        FittedBox(
+                          child: Text('ForeCasts',style: GoogleFonts.poppins(
+                            fontSize: MediaQuery.of(context).size.width * 0.13,
+                            color: Color(0xffDDB130),
+                          )),
+                        ),
                       ],
                     )
                   ],
                 ),
-                SizedBox(height: 50,),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
                 GestureDetector(
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen() ));
                   },
                   child: Center(
                     child: Container(
-                      height: 60,
-                      width: 250,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      width: MediaQuery.of(context).size.width * 0.6,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                         color: Color(0xffDDB130),
                       ),
                       child: Center(child: Text('Get Start',style: GoogleFonts.openSans(
-                        fontSize: 20,
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
                         fontWeight: FontWeight.bold,
                         color: Color(0xff362a84)
                       ),)),
